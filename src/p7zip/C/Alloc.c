@@ -94,6 +94,10 @@ void MyFree(void *address)
 
 #ifndef _WIN32
 
+#define MEM_COMMIT 0
+#define PAGE_READWRITE 0
+#define MEM_RELEASE 0
+
 #ifdef _7ZIP_LARGE_PAGES
 
 #ifdef __linux__
@@ -106,7 +110,7 @@ static char *g_HugetlbPath;
 #endif
 
 #ifdef _7ZIP_LARGE_PAGES
-static void *VirtualAlloc(size_t size, int memLargePages)
+static void *VirtualAlloc(int p1, size_t size, int memLargePages, int p2)
 {
   if (memLargePages)
   {
@@ -159,13 +163,13 @@ static void *VirtualAlloc(size_t size, int memLargePages)
   return align_alloc(size);
 }
 #else
-static void *VirtualAlloc(size_t size, int memLargePages )
+static void *VirtualAlloc(int p1, size_t size, int memLargePages, int p2)
 {
   return align_alloc(size);
 }
 #endif
 
-static int VirtualFree(void *address)
+static int VirtualFree(void *address, int p1, int p2)
 {
   #ifdef _7ZIP_LARGE_PAGES
   #ifdef __linux__
@@ -195,7 +199,7 @@ void *MidAlloc(size_t size)
   #ifdef _SZ_ALLOC_DEBUG
   fprintf(stderr, "\nAlloc_Mid %10d bytes;  count = %10d", size, g_allocCountMid++);
   #endif
-  return VirtualAlloc(size, 0);
+  return VirtualAlloc(0, size, MEM_COMMIT, PAGE_READWRITE);
 }
 
 void MidFree(void *address)
@@ -206,7 +210,7 @@ void MidFree(void *address)
   #endif
   if (address == 0)
     return;
-  VirtualFree(address);
+  VirtualFree(address, 0, MEM_RELEASE);
 }
 
 #ifdef _7ZIP_LARGE_PAGES
@@ -298,12 +302,13 @@ void *BigAlloc(size_t size)
   #ifdef _7ZIP_LARGE_PAGES
   if (g_LargePageSize != 0 && g_LargePageSize <= (1 << 30) && size >= (1 << 18))
   {
-    void *res = VirtualAlloc( (size + g_LargePageSize - 1) & (~(g_LargePageSize - 1)), 1);
+    void *res = VirtualAlloc(0, (size + g_LargePageSize - 1) & (~(g_LargePageSize - 1)),
+        MEM_COMMIT | MEM_LARGE_PAGES, PAGE_READWRITE);
     if (res != 0)
       return res;
   }
   #endif
-  return VirtualAlloc(size, 0);
+  return VirtualAlloc(0, size, MEM_COMMIT, PAGE_READWRITE);
 }
 
 void BigFree(void *address)
@@ -315,7 +320,7 @@ void BigFree(void *address)
 
   if (address == 0)
     return;
-  VirtualFree(address);
+  VirtualFree(address, 0, MEM_RELEASE);
 }
 
 static void *SzAlloc(void *p, size_t size) { UNUSED_VAR(p); return MyAlloc(size); }

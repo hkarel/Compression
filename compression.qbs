@@ -10,10 +10,12 @@ Product {
     Depends { name: "cpp" }
 
     cpp.archiverName: GccUtl.ar(cpp.toolchainPathPrefix)
-    cpp.defines: [
-        "_7ZIP_ST",
-        "_7ZIP_ASM",
-    ]
+    cpp.defines: {
+        var def = ["_7ZIP_ST"];
+        if (!qbs.toolchain.contains("mingw"))
+            def.push("_7ZIP_ASM");
+        return def;
+    }
     cpp.cFlags: [
         "-ggdb3",
         "-Wall",
