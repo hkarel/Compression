@@ -14,6 +14,10 @@ Product {
         var def = ["_7ZIP_ST"];
         if (!qbs.toolchain.contains("mingw"))
             def.push("_7ZIP_ASM");
+
+        def.push("_7ZIP_ASM");
+        def.push("LZMA_COMPRESSION");
+        def.push("PPMD_COMPRESSION");
         return def;
     }
     cpp.cFlags: [
@@ -40,5 +44,6 @@ Product {
     Export {
         Depends { name: "cpp" }
         cpp.includePaths: product.cpp.includePaths
+        cpp.defines: product.cpp.defines
     }
 }
