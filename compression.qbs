@@ -15,7 +15,6 @@ Product {
         if (!qbs.toolchain.contains("mingw"))
             def.push("_7ZIP_ASM");
 
-        def.push("_7ZIP_ASM");
         def.push("LZMA_COMPRESSION");
         def.push("PPMD_COMPRESSION");
         return def;
