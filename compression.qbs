@@ -10,15 +10,18 @@ Product {
     Depends { name: "cpp" }
 
     cpp.archiverName: GccUtl.ar(cpp.toolchainPathPrefix)
+
     cpp.defines: {
         var def = ["_7ZIP_ST"];
         if (!qbs.toolchain.contains("mingw"))
             def.push("_7ZIP_ASM");
-
-        def.push("LZMA_COMPRESSION");
-        def.push("PPMD_COMPRESSION");
         return def;
     }
+    //property var test: {
+    //    console.info("=== cppDefines===");
+    //    console.info(cpp.defines);
+    //}
+
     cpp.cFlags: [
         "-ggdb3",
         "-Wall",
@@ -33,16 +36,18 @@ Product {
         "-Wextra",
         "-Wno-unused-parameter",
     ]
-    cpp.includePaths: [
-        "./src",
-    ]
+    cpp.includePaths: ["src"]
+
     files: [
         "src/p7zip/C/*.c",
         "src/p7zip/C/*.h",
     ]
     Export {
         Depends { name: "cpp" }
-        cpp.includePaths: product.cpp.includePaths
-        cpp.defines: product.cpp.defines
+        cpp.includePaths: ["src"]
+        cpp.defines: [
+            "LZMA_COMPRESSION",
+            "PPMD_COMPRESSION"
+        ]
     }
 }
