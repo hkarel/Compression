@@ -2,15 +2,13 @@ import qbs
 import GccUtl
 
 Product {
-    type: "staticlibrary"
-
     name: "Compression"
     targetName: "compression"
 
+    type: "staticlibrary"
     Depends { name: "cpp" }
 
     cpp.archiverName: GccUtl.ar(cpp.toolchainPathPrefix)
-
     cpp.defines: {
         var def = ["_7ZIP_ST"];
         if (!qbs.toolchain.contains("mingw"))
