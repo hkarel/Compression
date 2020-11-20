@@ -26,8 +26,9 @@
 #include "qppmd.h"
 #include "p7zip/C/Alloc.h"
 #include "p7zip/C/Ppmd7.h"
-#include "simple_ptr.h"
-#include "qt/stream_init.h"
+
+#include "shared/simple_ptr.h"
+#include "shared/qt/stream_init.h"
 
 #include <QDataStream>
 #include <stdexcept>

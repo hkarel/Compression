@@ -29,10 +29,11 @@
 #include "p7zip/C/LzmaEnc.h"
 #include "p7zip/C/Lzma2Dec.h"
 #include "p7zip/C/Lzma2Enc.h"
-#include "container_ptr.h"
-#include "spin_locker.h"
-#include "qt/stream_init.h"
-#include "thread/thread_info.h"
+
+#include "shared/container_ptr.h"
+#include "shared/spin_locker.h"
+#include "shared/qt/stream_init.h"
+#include "shared/thread/thread_utils.h"
 
 #include <QDataStream>
 #include <stdexcept>
