@@ -31,6 +31,7 @@
 #include "shared/qt/stream_init.h"
 
 #include <QDataStream>
+#include <cassert>
 #include <stdexcept>
 
 #define IN_BUF_SIZE (1 << 18)
@@ -102,7 +103,7 @@ struct ByteOutBuf : IByteOut
     Byte* buf = {0};
     const Byte* lim = {0};
     size_t size = {0};
-    QDataStream* stream;
+    QDataStream* stream = {0};
 
     ByteOutBuf();
     ~ByteOutBuf();
@@ -230,6 +231,7 @@ Byte ByteInBuf::readByteFromNewBlock()
 {
     if (!extra)
     {
+        assert(stream);
         size_t avail = stream->readRawData((char*)buf, size);
         cur = buf;
         lim = buf + avail;
