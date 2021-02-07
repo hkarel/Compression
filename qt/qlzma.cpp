@@ -175,7 +175,7 @@ namespace qlzma {
 
 void removeRancidEncoders()
 {
-    SpinLocker locker(lzma2EncMapLock); (void) locker;
+    SpinLocker locker {lzma2EncMapLock}; (void) locker;
     lzma2EncMap.clear();
 }
 
@@ -206,7 +206,7 @@ int compress(const QByteArray& in, QByteArray& out, int compressionLevel)
 
         Lzma2Encoder::Ptr enc;
         { //Block for SpinLocker
-            SpinLocker locker(lzma2EncMapLock); (void) locker;
+            SpinLocker locker {lzma2EncMapLock}; (void) locker;
             if (++callsCount > callsCountLimit)
             {
                 // Чистим "мусор" оставшийся от завершенных потоков
