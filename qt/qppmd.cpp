@@ -34,7 +34,7 @@
 #include <cassert>
 #include <stdexcept>
 
-#define IN_BUF_SIZE (1 << 18)
+#define IN_BUF_SIZE  (1 << 18)
 #define OUT_BUF_SIZE (1 << 18)
 
 namespace {
@@ -274,7 +274,7 @@ int compress(const QByteArray& in, QByteArray& out, int compressionLevel)
     out.clear();
     out.reserve(uncompressedSize * 0.7);
 
-    InBufPtr inBuf = InBufPtr::create_ptr();
+    InBufPtr inBuf = InBufPtr::create();
     if (inBuf.get() == 0)
         return SZ_ERROR_MEM;
 
@@ -356,7 +356,7 @@ int decompress(const QByteArray& in, QByteArray& out)
     out.clear();
     out.reserve(in.size() * 2);
 
-    OutBufPtr outBuf = OutBufPtr::create_ptr();
+    OutBufPtr outBuf = OutBufPtr::create();
     if (outBuf.get() == 0)
         return SZ_ERROR_MEM;
 

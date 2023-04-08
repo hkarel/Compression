@@ -40,7 +40,7 @@
 #include <atomic>
 #include <map>
 
-#define IN_BUF_SIZE (1 << 18)
+#define IN_BUF_SIZE  (1 << 18)
 #define OUT_BUF_SIZE (1 << 18)
 
 namespace {
@@ -217,7 +217,7 @@ int compress(const QByteArray& in, QByteArray& out, int compressionLevel)
             enc = lzma2EncMap[tid];
             if (enc.empty())
             {
-                enc = Lzma2Encoder::Ptr::create_ptr();
+                enc = Lzma2Encoder::Ptr::create();
                 if (enc->handle == 0)
                     return SZ_ERROR_MEM;
                 lzma2EncMap[tid] = enc;
